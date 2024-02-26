@@ -60,16 +60,16 @@ class FetchNBA_Names_HREF:
             
         return player_data
 
-    def fetch_and_display_players(self):
-        page_source = self.get_all_players_page_source()
-        players = self.get_player_data(page_source)
+#     def fetch_and_display_players(self):
+#         page_source = self.get_all_players_page_source()
+#         players = self.get_player_data(page_source)
 
-        # Display the result
-        for i, player in enumerate(players, start=1):
-            print(f"{i}. Name: {player['name']}, Href: {player['href']}")
+#         # Display the result
+#         for i, player in enumerate(players, start=1):
+#             print(f"{i}. Name: {player['name']}, Href: {player['href']}")
 
-# Create an instance of the class
-nba_fetcher = FetchNBA_Names_HREF()
+# # Create an instance of the class
+# nba_fetcher = FetchNBA_Names_HREF()
 
-# Call the method to fetch and display players
-nba_fetcher.fetch_and_display_players()
+# # Call the method to fetch and display players
+# nba_fetcher.fetch_and_display_players()
