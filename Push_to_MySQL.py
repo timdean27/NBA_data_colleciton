@@ -1,5 +1,5 @@
 import mysql.connector
-from Push_to_MySQL import FetchNBA_Names_HREF
+from nba_scrape import FetchNBA_Names_HREF
 
 class Push_to_mySQL:
     def __init__(self, host, user, password, database):
@@ -67,7 +67,7 @@ class Push_to_mySQL:
             href = player['href']
 
             # Define the SQL query to insert data into the table
-            insert_query = "INSERT INTO nba_players (first_name, last_name, href) VALUES (%s, %s, %s)"
+            insert_query = "INSERT IGNORE INTO nba_players (first_name, last_name, href) VALUES (%s, %s, %s)"
             values = (first_name, last_name, href)
 
             # Execute the query
@@ -81,11 +81,10 @@ class Push_to_mySQL:
         connection.close()
 
 if __name__ == "__main__":
-    # Replace 'your_mysql_host', 'your_mysql_user', 'your_mysql_password', and 'your_mysql_database' with your MySQL credentials
-    mysql_host = 'your_mysql_host'
-    mysql_user = 'your_mysql_user'
-    mysql_password = 'your_mysql_password'
-    mysql_database = 'your_mysql_database'
+    mysql_host = 'localhost'
+    mysql_user = 'root'
+    mysql_password = 'Fishboy@27!'
+    mysql_database = 'nba_data'
 
     pusher = Push_to_mySQL(mysql_host, mysql_user, mysql_password, mysql_database)
 

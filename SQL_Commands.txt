@@ -1,0 +1,15 @@
+    mysql_host = 'localhost'
+    mysql_user = 'root'
+    mysql_password = 'Fishboy@27!'
+    mysql_database = 'nba_data'
+
+SHOW DATABASES;
+
+USE nba_data;
+
+SHOW TABLES;
+
+SELECT * FROM nba_players;
+
+DELETE FROM nba_players;
+DROP TABLE nba_players;
