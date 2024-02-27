@@ -45,20 +45,28 @@ class FetchNBA_Names_HREF:
         # Use class names to select the table body
         player_list = soup.find("table", class_="players-list") 
 
-        # Extract player names and href attributes
-        player_data = []
-        for row in player_list.find_all("td", class_="primary text RosterRow_primaryCol__1lto4"): 
-            player_name = row.find("div", class_="RosterRow_playerName__G28lg")
-            first_name = row.find("p", class_="RosterRow_playerFirstName__NYm50")
-            player_page_link = row.find("a", class_="Anchor_anchor__cSc3P RosterRow_playerLink__qw1vG")
 
-            # Check if both player_name and first_name are not None before extracting text
-            if player_name and first_name and player_page_link:
-                full_name = f"{first_name.text} {player_name.text}"
+        # Extract player names, href attributes, and image sources
+        player_data = []
+        for row in player_list.find_all("td", class_="primary text RosterRow_primaryCol__1lto4"):
+            player_name_container = row.find("div", class_="RosterRow_playerName__G28lg")
+            player_first_name = player_name_container.find("p", class_="RosterRow_playerFirstName__NYm50").text
+            player_last_name = player_name_container.find_all("p")[1].text  # Select the second <p> tag for last name
+            player_page_link = row.find("a", class_="Anchor_anchor__cSc3P RosterRow_playerLink__qw1vG")
+            player_image = row.find("img", class_="PlayerImage_image__wH_YX PlayerImage_round__bIjPr")
+
+            # Check if all required elements are not None before extracting data
+            if player_name_container and player_first_name and player_page_link and player_image:
+                full_name = f"{player_first_name} {player_last_name}"
+                first_name = f"{player_first_name}"
+                last_name = f"{player_last_name}"
                 player_href = player_page_link.get("href")
-                player_data.append({"name": full_name, "href": player_href})
-            
+                player_img_src = player_image.get("src")  # Extract 'src' attribute directly
+                player_data.append({"name": full_name, "first_name": player_first_name, "last_name": player_last_name, "href": player_href, "img_src": player_img_src})
+
         return player_data
+
+
 
 #     def fetch_and_display_players(self):
 #         page_source = self.get_all_players_page_source()
