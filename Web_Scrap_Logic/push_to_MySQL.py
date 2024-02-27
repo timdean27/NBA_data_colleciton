@@ -21,14 +21,15 @@ class Push_to_mySQL:
         cursor = connection.cursor()
 
         # Define the SQL query to create a table
-        create_table_query = """
-        CREATE TABLE IF NOT EXISTS nba_players (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            first_name VARCHAR(255) NOT NULL,
-            last_name VARCHAR(255) NOT NULL,
-            href VARCHAR(255) NOT NULL
-        )
+        create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS nba_players (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                href VARCHAR(255) UNIQUE NOT NULL COLLATE utf8_general_ci
+            )
         """
+
 
         # Execute the query
         cursor.execute(create_table_query)
