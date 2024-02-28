@@ -21,13 +21,15 @@ class Push_to_mySQL:
         cursor = connection.cursor()
 
         # Define the SQL query to create a table
-        create_table_query = """
-        CREATE TABLE IF NOT EXISTS nba_players (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            first_name VARCHAR(255) NOT NULL,
-            last_name VARCHAR(255) NOT NULL,
-            href VARCHAR(255) NOT NULL
-        )
+        create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS nba_players (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                full_name VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                href VARCHAR(255) UNIQUE NOT NULL COLLATE utf8_general_ci,
+                img_src VARCHAR(255) NOT NULL
+            )
         """
 
         # Execute the query
@@ -59,16 +61,18 @@ class Push_to_mySQL:
         # Create a cursor object to execute SQL queries
         cursor = connection.cursor()
 
+
         # Insert player data into the MySQL table
         for player in players:
-            full_name = player['name'].split(' ')
-            first_name = full_name[0]
-            last_name = full_name[1] if len(full_name) > 1 else ''
+            full_name = player['name']
+            first_name = player['first_name']
+            last_name = player['last_name']
             href = player['href']
+            img_src = player['img_src']  # Use 'img_src'
 
             # Define the SQL query to insert data into the table
-            insert_query = "INSERT IGNORE INTO nba_players (first_name, last_name, href) VALUES (%s, %s, %s)"
-            values = (first_name, last_name, href)
+            insert_query = "INSERT IGNORE INTO nba_players (full_name, first_name, last_name, href, img_src) VALUES (%s, %s, %s, %s, %s)"
+            values = (full_name,first_name, last_name, href, img_src)
 
             # Execute the query
             cursor.execute(insert_query, values)
