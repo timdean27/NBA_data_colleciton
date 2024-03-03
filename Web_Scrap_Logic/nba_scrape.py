@@ -8,6 +8,7 @@ class FetchNBA_Names_HREF:
         self.url = "https://www.nba.com/players"
 
     def get_all_players_page_source(self):
+        print(f"running get_all_players_page_source method in FetchNBA_Names_HREF class")
         # Set up Chrome WebDriver
         driver = webdriver.Chrome()
         driver.get(self.url)
@@ -24,7 +25,7 @@ class FetchNBA_Names_HREF:
         dropdown = Select(dropdown_element)
 
         # Select the first option in the dropdown
-        dropdown.select_by_index(0)
+        dropdown.select_by_index(1)
 
         # Wait for the page to load after selecting "All" (adjust the time as needed)
         time.sleep(2)
@@ -48,6 +49,7 @@ class FetchNBA_Names_HREF:
 
         # Extract player names, href attributes, and image sources
         player_data = []
+        limit_players_for_test = 10
         for row in player_list.find_all("td", class_="primary text RosterRow_primaryCol__1lto4"):
             player_name_container = row.find("div", class_="RosterRow_playerName__G28lg")
             player_first_name = player_name_container.find("p", class_="RosterRow_playerFirstName__NYm50").text
@@ -63,8 +65,12 @@ class FetchNBA_Names_HREF:
                 player_href = player_page_link.get("href")
                 player_img_src = player_image.get("src")  # Extract 'src' attribute directly
                 player_data.append({"name": full_name, "first_name": player_first_name, "last_name": player_last_name, "href": player_href, "img_src": player_img_src})
+            
+            if len(player_data) >= limit_players_for_test:
+                break  # Stop collecting more players once the limit is reached
 
-        return player_data
+        return player_data 
+ 
 
 
 

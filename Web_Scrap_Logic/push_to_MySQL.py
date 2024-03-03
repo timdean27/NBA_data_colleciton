@@ -1,6 +1,7 @@
 import mysql.connector
 from nba_scrape import FetchNBA_Names_HREF
 
+
 class Push_to_mySQL:
     def __init__(self, host, user, password, database):
         self.host = host
