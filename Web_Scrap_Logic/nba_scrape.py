@@ -8,6 +8,7 @@ class FetchNBA_Names_HREF:
         self.url = "https://www.nba.com/players"
 
     def get_all_players_page_source(self):
+        print(f"running get_all_players_page_source method in FetchNBA_Names_HREF class")
         # Set up Chrome WebDriver
         driver = webdriver.Chrome()
         driver.get(self.url)
