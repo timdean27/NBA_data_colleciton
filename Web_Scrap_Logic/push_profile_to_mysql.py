@@ -19,7 +19,7 @@ class PushProfileToMySQL:
         # Add missing columns
         for column in columns_to_add:
             if column not in existing_columns:
-                alter_query = f"ALTER TABLE nba_players ADD COLUMN {column} INT"
+                alter_query = f"ALTER TABLE nba_players ADD COLUMN {column} FLOAT"
                 cursor.execute(alter_query)
 
     def check_table_columns_existence(self, cursor):
@@ -88,7 +88,7 @@ class PushProfileToMySQL:
                 connection.commit()
 
                 # Print information for each player
-                print(f"{player_name} - PPG: {ppg}, RPG: {rpg}, APG: {apg} - Updated in MySQL with comment: Custom comment here")
+                print(f"{player_name} - PPG: {ppg}, RPG: {rpg}, APG: {apg} - Updated in MySQL")
 
             except mysql.connector.Error as err:
                 print(f"Error updating data: {err}")
