@@ -16,8 +16,8 @@ if __name__ == "__main__":
         # Fetch player data
         print("Fetching NBA player data...")
         page_source = nba_fetcher.get_all_players_page_source()
-        player_data = nba_fetcher.get_player_data(page_source)
-        print(f"Found {len(player_data)} players.")
+        player_data_from_nba_scrape = nba_fetcher.get_player_data(page_source)
+        print(f"Found {len(player_data_from_nba_scrape)} players.")
 
         # Create an instance of the PlayerProfileScraper class
         print("Creating PlayerProfileScraper instance...")
@@ -25,14 +25,14 @@ if __name__ == "__main__":
 
         # Scrape player profiles using the obtained player_data
         print("Scraping player profiles...")
-        profile_data = profile_scraper.scrape_player_profiles(player_data)
+        profile_data = profile_scraper.scrape_player_profiles(player_data_from_nba_scrape)
         print(f"Scraped profiles for {len(profile_data)} players.")
 
         # Create an instance of the PushProfileToMySQL class
         print("Creating PushProfileToMySQL instance...")
         profile_pusher = PushProfileToMySQL(mysql_host, mysql_user, mysql_password, mysql_database)
         # Ensure table exists and columns are correct
-        profile_pusher.check_table_columns_existence()
+        profile_pusher.create_table()
         # Push profile data to MySQL
         print("Pushing profile data to MySQL...")
         profile_pusher.push_profile_data_to_mysql(profile_data)

@@ -108,6 +108,10 @@ class PushProfileToMySQL:
 
                 for profile_data in profile_data_list:
                     player_name = profile_data['name']
+                    first_name = profile_data['first_name']
+                    last_name = profile_data['last_name']
+                    href = profile_data['href']
+                    img_src = profile_data['img_src']
                     ppg = profile_data['ppg']
                     rpg = profile_data['rpg']
                     apg = profile_data['apg']
@@ -128,7 +132,7 @@ class PushProfileToMySQL:
                     cursor.execute(insert_query, values)
                     connection.commit()
 
-                    logging.info(f"Player: {player_name} - PPG: {ppg}, RPG: {rpg}, APG: {apg}, PIE: {pie} - Updated in MySQL")
+                    logging.info(f"Player: {player_name} first_name : {first_name} last_name: {last_name} href: {href} img_src {img_src} - PPG: {ppg}, RPG: {rpg}, APG: {apg}, PIE: {pie} - Updated in MySQL")
 
         except mysql.connector.Error as error:
             logging.error(f"Error pushing profile data: {error}")

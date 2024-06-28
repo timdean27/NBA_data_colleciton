@@ -8,50 +8,55 @@ class PlayerProfileScraper:
     def __init__(self):
         self.base_url = "https://www.nba.com"
 
-    def scrape_player_profiles(self, player_data):
+    def scrape_player_profiles(self, player_data_from_nba_scrape):
         print("Running scrape_player_profiles method in PlayerProfileScraper class")
         profile_data_list = []
 
-        # Set up Chrome WebDriver
         with webdriver.Chrome() as driver:
-            for player in player_data:
+            for player in player_data_from_nba_scrape:
                 player_href = player['href']
                 player_profile_url = f"{self.base_url}{player_href}/profile"
 
                 try:
-                    # Use Selenium to get the dynamic content of the player's profile
                     driver.get(player_profile_url)
-                    time.sleep(2)  # Add a delay to ensure the page loads
+                    time.sleep(2)
 
-                    # Use BeautifulSoup to parse the player's profile page
                     profile_page_source = driver.page_source
                     profile_soup = BeautifulSoup(profile_page_source, "html.parser")
 
-                    # Example: Extract Points Per Game (PPG)
+                    # Extract Points Per Game (PPG)
                     points_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="PPG")
-                    points_per_game_value = points_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text if points_per_game else None
+                    if points_per_game:
+                        points_per_game_value = points_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
 
-                    # Example: Extract Rebounds Per Game (RPG)
+                    # Extract Rebounds Per Game (RPG)
                     rebounds_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="RPG")
-                    rebounds_per_game_value = rebounds_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text if rebounds_per_game else None
+                    if rebounds_per_game:
+                        rebounds_per_game_value = rebounds_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
 
-                    # Example: Extract Assists Per Game (APG)
+                    # Extract Assists Per Game (APG)
                     assists_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="APG")
-                    assists_per_game_value = assists_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text if assists_per_game else None
+                    if assists_per_game:
+                        assists_per_game_value = assists_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
 
-                    # Example: Extract Player Impact Estimate (PIE)
+                    # Extract Player Impact Estimate (PIE)
                     pie = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="PIE")
-                    pie_value = pie.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text if pie else None
+                    if pie:
+                        pie_value = pie.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
 
-                    # Store the scraped data in a dictionary
                     player_profile_data = {
                         'name': player['name'],
+                        'first_name': player['first_name'],
+                        'last_name': player['last_name'],
+                        'href': player['href'],
+                        'img_src': player['img_src'],
                         'ppg': points_per_game_value,
                         'rpg': rebounds_per_game_value,
                         'apg': assists_per_game_value,
                         'pie': pie_value
                     }
-
+                    
+                    print("player_profile_data created ", player_profile_data)
                     profile_data_list.append(player_profile_data)
 
                 except Exception as e:
