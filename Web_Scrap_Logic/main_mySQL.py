@@ -31,7 +31,8 @@ if __name__ == "__main__":
         # Create an instance of the PushProfileToMySQL class
         print("Creating PushProfileToMySQL instance...")
         profile_pusher = PushProfileToMySQL(mysql_host, mysql_user, mysql_password, mysql_database)
-
+        # Ensure table exists and columns are correct
+        profile_pusher.check_table_columns_existence()
         # Push profile data to MySQL
         print("Pushing profile data to MySQL...")
         profile_pusher.push_profile_data_to_mysql(profile_data)

@@ -9,7 +9,7 @@ class FetchNBA_Names_HREF:
         self.url = "https://www.nba.com/players"
 
     def get_all_players_page_source(self):
-        print(f"Running get_all_players_page_source method in FetchNBA_Names_HREF class")
+        print("Running get_all_players_page_source method in FetchNBA_Names_HREF class")
         # Set up Chrome WebDriver
         driver = webdriver.Chrome()
         driver.get(self.url)
@@ -75,7 +75,7 @@ class FetchNBA_Names_HREF:
             driver.quit()
 
     def get_player_data(self, page_source):
-        print("Running get_play_data fucntion")
+        print("Running get_player_data method in FetchNBA_Names_HREF class")
         try:
             # Parse the page source with BeautifulSoup
             soup = BeautifulSoup(page_source, "html.parser")
@@ -85,7 +85,7 @@ class FetchNBA_Names_HREF:
 
             # Extract player names, href attributes, and image sources
             player_data = []
-            limit_players_for_test = 15
+            limit_players_for_test = 1
             for idx, row in enumerate(player_list.find_all("td", class_="primary text RosterRow_primaryCol__1lto4"), 1):
                 player_name_container = row.find("div", class_="RosterRow_playerName__G28lg")
                 player_first_name = player_name_container.find("p", class_="RosterRow_playerFirstName__NYm50").text
@@ -113,3 +113,25 @@ class FetchNBA_Names_HREF:
         except Exception as e:
             print(f"Error in get_player_data: {e}")
             return None
+
+# Example usage:
+if __name__ == "__main__":
+    try:
+        nba_fetcher = FetchNBA_Names_HREF()
+
+        # Fetch player data
+        page_source = nba_fetcher.get_all_players_page_source()
+
+        if page_source:
+            player_data = nba_fetcher.get_player_data(page_source)
+            if player_data:
+                print(f"Scraped profiles for {len(player_data)} players.")
+                for player in player_data:
+                    print(player)
+            else:
+                print("No player data fetched.")
+        else:
+            print("Failed to fetch page source.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
