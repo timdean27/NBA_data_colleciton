@@ -85,7 +85,7 @@ class FetchNBA_Names_HREF:
 
             # Extract player names, href attributes, and image sources
             player_data = []
-            limit_players_for_test = 12
+            limit_players_for_test = 25
             for idx, row in enumerate(player_list.find_all("td", class_="primary text RosterRow_primaryCol__1lto4"), 1):
                 player_name_container = row.find("div", class_="RosterRow_playerName__G28lg")
                 player_first_name = player_name_container.find("p", class_="RosterRow_playerFirstName__NYm50").text
