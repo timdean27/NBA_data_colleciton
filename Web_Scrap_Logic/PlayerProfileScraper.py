@@ -1,4 +1,3 @@
-
 from nba_scrape import FetchNBA_Names_HREF
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -24,25 +23,35 @@ class PlayerProfileScraper:
                     profile_page_source = driver.page_source
                     profile_soup = BeautifulSoup(profile_page_source, "html.parser")
 
+                    # Initialize default values
+                    points_per_game_value = 0.0
+                    rebounds_per_game_value = 0.0
+                    assists_per_game_value = 0.0
+                    pie_value = 0.0
+
                     # Extract Points Per Game (PPG)
                     points_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="PPG")
                     if points_per_game:
                         points_per_game_value = points_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
+                        points_per_game_value = 0.0 if points_per_game_value == '--' else float(points_per_game_value)
 
                     # Extract Rebounds Per Game (RPG)
                     rebounds_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="RPG")
                     if rebounds_per_game:
                         rebounds_per_game_value = rebounds_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
+                        rebounds_per_game_value = 0.0 if rebounds_per_game_value == '--' else float(rebounds_per_game_value)
 
                     # Extract Assists Per Game (APG)
                     assists_per_game = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="APG")
                     if assists_per_game:
                         assists_per_game_value = assists_per_game.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
+                        assists_per_game_value = 0.0 if assists_per_game_value == '--' else float(assists_per_game_value)
 
                     # Extract Player Impact Estimate (PIE)
                     pie = profile_soup.find("p", class_="PlayerSummary_playerStatLabel__I3TO3", string="PIE")
                     if pie:
                         pie_value = pie.find_next("p", class_="PlayerSummary_playerStatValue___EDg_").text
+                        pie_value = 0.0 if pie_value == '--' else float(pie_value)
 
                     player_profile_data = {
                         'name': player['name'],
